@@ -1,19 +1,80 @@
 openapi: 3.0.0
-
 info:
   title: API de ejemplo
   description: Ejemplo de documentación de API
   version: 1.0.0
-
+servers:
+  - url: http://localhost:3000
 paths:
-  /:
+  /items:
     get:
-      summary: Devolver saludo
+      summary: Obtener todos los items
+      description: Hace un request para devolver un array con todos los items almacenados.
       responses:
         '200':
-          description: Respuesta de saludo
+          description: Un array de items devuelto con éxito.
           content:
             application/json:
               schema:
-                type: string
-                example: ¡Hola Mundo!
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+    post:
+      summary: Crear un nuevo item
+      description: Envía un request body para añadir un nuevo item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: Item creado exitosamente.
+  /items/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: El ID del item pasado como parámetro en la URL.
+        schema:
+          type: string
+    put:
+      summary: Actualizar un item existente
+      description: Encuentra un item por su ID y actualiza su contenido basándose en el request body.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Item actualizado exitosamente.
+        '404':
+          description: Item not found (Item no encontrado).
+    delete:
+      summary: Eliminar un item
+      description: Filtra y elimina un item por su ID.
+      responses:
+        '204':
+          description: Item eliminado exitosamente. No devuelve contenido.
+        '404':
+          description: Item not found (Item no encontrado).
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+          description: El ID único del item.
+        name:
+          type: string
+          description: El nombre asignado al item.
