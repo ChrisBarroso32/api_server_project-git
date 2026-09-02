@@ -2,6 +2,7 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
+const apiDocs = '/api-docs'
 
 const app = express();
 const port = 3000;
@@ -41,13 +42,13 @@ app.put('/items/:id', (req, res) => {
 });
 
 // DELETE
-app.delete('/items/:id', (req, req) => {
-    items = items.filter(i => i.id !== parseInt(req.body.id));
+app.delete('/items/:id', (req, res) => {
+    items = items.filter(i => i.id !== parseInt(req.params.id));
     res.status(204).send();
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(apiDocs, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(port, () => {
-    console.log(`Aplicación de ejemplo por medio de http://localhost:${port}`)
+    console.log(`Aplicación de ejemplo por medio de http://localhost:${port}${apiDocs}`)
 })
