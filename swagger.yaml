@@ -1,0 +1,18 @@
+openapi: 3.0.0
+
+info:
+  title: API de ejemplo
+  description: Ejemplo de documentación de API
+  version: 1.0.0
+path:
+  /:
+    get:
+      sumary: Devolver saludo
+      response:
+        200:
+        description: Respuesta de saludo
+        content:
+          aplication/json:
+            schema:
+              type: string
+              example: ¡Hola Mundo!
